@@ -94,9 +94,6 @@
     @keyframes caPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,215,0,.15), 0 10px 26px rgba(255,215,0,.22)} 50%{box-shadow:0 0 0 6px rgba(255,215,0,.1), 0 14px 36px rgba(255,215,0,.28)}}
     .ca .actions{display:flex; gap:8px; margin-left:auto; flex-wrap:wrap; align-items:center}
 
-    .copy,.add-wallet{border:2px solid var(--gold-400); background:linear-gradient(180deg,#fff9cc,#ffef9e); color:#3e2e00; border-radius:10px; padding:10px 12px; cursor:pointer; font-weight:700; box-shadow:0 6px 18px rgba(255,215,0,.25); margin-top:0}
-    .copy:hover,.add-wallet:hover{transform:translateY(-1px)}
-
     .row{display:grid; grid-template-columns:1fr; gap:12px}
     @media (min-width:700px){ .row{grid-template-columns:1fr 1fr; gap:16px} }
 
@@ -236,7 +233,6 @@
         Official CA: <code id="ca">B1Wz64bVYUmApY4okupgbDB3GNRcn47HKodPeKhUpump</code>
         <div class="actions">
           <button class="copy" onclick="copyCA()">Copy</button>
-          <button class="add-wallet" onclick="addToWallet()">Add to Wallet 🦊</button>
         </div>
       </div>
       <div class="scam">🚨 <strong>Warning:</strong> This is the <em>only</em> official contract address. Always verify on the explorer. Never trust DMs.</div>
@@ -272,20 +268,6 @@
     function copyCA(){
       const txt = document.querySelector('#ca').innerText.trim();
       navigator.clipboard.writeText(txt).then(()=>{ toast('Contract copied to clipboard'); }).catch(()=>toast('Copy failed'));
-    }
-
-    // Add token to wallet (MetaMask / wallet_watchAsset)
-    async function addToWallet(){
-      const tokenAddress = document.querySelector('#ca').innerText.trim();
-      try {
-        if(window.ethereum){
-          const added = await window.ethereum.request({
-            method: 'wallet_watchAsset',
-            params: { type: 'ERC20', options: { address: tokenAddress, symbol: 'GSHIBA', decimals: 9, image: 'https://ugc.production.linktr.ee/f0b1d983-447b-4df8-b0b7-5b71180c6393_goldenshiba.com-logo.gif?io=true&size=avatar-v3_0' } }
-          });
-          if(added){ toast('Token added to wallet'); } else { toast('Rejected in wallet'); }
-        } else { toast('No Web3 wallet detected'); }
-      } catch (err) { console.error(err); toast('Failed to add token'); }
     }
 
     // Dexscreener live market
